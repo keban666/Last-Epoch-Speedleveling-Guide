@@ -4,8 +4,28 @@
   <meta charset="UTF-8">
   <title>Last Epoch Speedleveling Guide</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <!-- Favicon: -->
+  <!-- <link rel="icon" type="image/x-icon" href="/favicon.ico" /> -->
+  <link 
+    rel="icon" 
+    type="image/png" 
+	sizes="32x32"
+    href="/favicon-32.png" />
+
   <style>
     /* Overall page layout */
+	
+	#main {
+	  display: flex;
+	}
+	
     body {
       margin: 0;
       padding: 0;
@@ -14,7 +34,6 @@
 	  font-size: 1.2rem;
 	  text-shadow: 1px 1px 2px black;
       color: rgb(180, 158, 121);
-      display: flex;
     }
     /* Sidebar styling */
     #sidebar {
@@ -121,6 +140,29 @@
 	  color: #D2691E;
 	  font-weight: bold;
 	}
+		/* Footer styling */
+	#footer {
+	  margin-top: 60px;         /* space above it */
+	  padding: 20px 0;
+	  text-align: center;
+	  color: #e0e0e0;
+	  font-size: 1.25rem;
+	}
+
+	#footer p {
+	  margin: 0 0 8px;
+	}
+
+	#footer a {
+	  margin: 0 10px;
+	  color: #e0e0e0;
+	  text-decoration: none;
+	  font-size: 1.5rem;
+	  transition: color 0.3s;
+	}
+	#footer a:hover {
+	  color: #f39c12;
+	}
 
   </style>
   <script>
@@ -158,6 +200,10 @@
         toggleStrike(checkbox, checkbox.id + '-label');
         localStorage.removeItem(checkbox.id);
       });
+	  
+	  // scroll back up to ACT I:
+	  document.getElementById('act1').scrollIntoView({ behavior: 'smooth' });
+	  
     }
 
     document.addEventListener("DOMContentLoaded", restoreCheckboxStates);
@@ -238,6 +284,8 @@
 </head>
 <body>
 
+  <div id="main">
+  
   <!-- Sidebar Navigation -->
   <div id="sidebar">
     <div>
@@ -823,6 +871,19 @@
 		  <br><br>Now, you can freely continue your Monolith progression and focus on gearing up for endgame challenges.</p>	  
     </div>
   </div>
+   <!-- closing id="main" -->
+  </div>
+  
+  <!-- Footer -->
+	<footer id="footer">
+	  <p>Contact &amp; Suggestions:</p>
+	 <a href="mailto:strelec.maksim@gmail.com" title="Email">
+		<i class="fas fa-envelope"></i>
+	  </a>
+	  <a href="https://discord.gg/ZxYyCGfcj9" title="Discord" target="_blank">
+		<i class="fab fa-discord"></i>
+	  </a>
+	</footer>
 
 </body>
 </html>
