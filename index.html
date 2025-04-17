@@ -88,7 +88,7 @@
 	 cursor: pointer;
 	 border-radius: 4px;
 	 transition: background-color 0.3s;
-	 width: 100%;
+	 flex: 7;
 	}
 
     #clearBtn:hover {
@@ -193,7 +193,64 @@
 	  margin-left: 20px;  /* or whatever minimal padding you like */
 	  transition: margin-left 0.3s ease;
 	}
+	
+	/* Scroll to Top button styling */
+	#scrollTopBtn {
+	  flex: 3;
+	  background-color: #f39c12;
+	  border: none;
+	  color: #141414;
+	  padding: 10px 20px;
+	  margin-top: 12px;      /* space from Clear All */
+	  margin-bottom: 40px;   /* same bottom space as Clear All */
+	  font-size: 20px;
+	  cursor: pointer;
+	  border-radius: 4px;
+	  transition: background-color 0.3s;
+	}
+	#scrollTopBtn:hover {
+	  background-color: #e08c0c;
+	}
+	
+	
+	/* two action buttons side-by-side */
+	#sidebar-actions {
+	  display: flex;
+	  width: 100%;
+	  gap: 8px;         /* space between them */
+	  margin-top: 20px; /* or whatever spacing had before */
+	  margin-bottom: 40px;
+	  align-items: stretch;  /* make children the same height */
+	}
 
+	/* each button can flex to desired ratio */
+	#clearBtn {
+	  flex: 7;          /* 70% of the row */
+	}
+
+	#scrollTopBtn {
+	  flex: 3;          /* 30% of the row */
+	}
+
+	/* Reset individual button margins */
+	#sidebar-actions button {
+	  margin: 0;
+	  padding: 10px 0;       /* vertical padding only; horizontal centering via flex below */
+	  font-size: 1.1rem;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  border-radius: 4px;
+	  border: none;
+	  background: #f39c12;
+	  color: #141414;
+	  cursor: pointer;
+	  transition: background-color 0.3s;
+	}
+	
+	#sidebar-actions button:hover {
+	  background: #e08c0c;
+	}
 
   </style>
   <script>
@@ -231,10 +288,6 @@
         toggleStrike(checkbox, checkbox.id + '-label');
         localStorage.removeItem(checkbox.id);
       });
-	  
-	  // scroll back up to ACT I:
-	  document.getElementById('act1').scrollIntoView({ behavior: 'smooth' });
-	  
     }
 
     document.addEventListener("DOMContentLoaded", restoreCheckboxStates);
@@ -300,6 +353,16 @@
 	  });
 	});
 	
+	
+	window.addEventListener('DOMContentLoaded', () => {
+
+	  // ScrolltoTop button handler
+	  const scrollBtn = document.getElementById('scrollTopBtn');
+	  scrollBtn.addEventListener('click', () => {
+		document.getElementById('act1').scrollIntoView({ behavior: 'smooth' });
+	  });
+	});
+	
   </script>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N904BCZT2V"></script>
@@ -335,8 +398,19 @@
 		<li><a href="#act9">Temporal  Sanctum and ACT IX</a></li>
       </ul>
     </div>
+	
+	<div id="sidebar-actions">
+	
     <!-- Clear All Button at bottom of sidebar -->
     <button id="clearBtn" onclick="clearAll()">Clear All</button>
+	
+	<!-- ScrollTop Button -->
+	
+	<button id="scrollTopBtn" title="Back to Top">
+	  <i class="fas fa-arrow-up"></i>
+	</button>
+	
+	</div>
   </div>
 
   <!-- Main Content -->
