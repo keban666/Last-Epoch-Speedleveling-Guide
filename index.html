@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Last Epoch Speedleveling Guide</title>
+  
+  <!-- Fonts: -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
   <link
     rel="stylesheet"
@@ -11,8 +13,8 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
+  
   <!-- Favicon: -->
-  <!-- <link rel="icon" type="image/x-icon" href="/favicon.ico" /> -->
   <link 
     rel="icon" 
     type="image/png" 
@@ -37,6 +39,7 @@
     }
     /* Sidebar styling */
     #sidebar {
+	  transition: transform 0.3s ease;
       width: 220px;
       background: #1e1e1e;
       padding: 20px;
@@ -96,6 +99,7 @@
       margin-left: 260px; /* increased margin-left for better readability */
       padding: 20px;
       max-width: 70%;
+	  transition: margin-left 0.3s ease;
     }
     h1, h2, h3 {
       color: #f39c12;
@@ -163,6 +167,33 @@
 	#footer a:hover {
 	  color: #f39c12;
 	}
+	
+	
+	/* 1) Style the burger button */
+	#burger {
+	  position: fixed;
+	  top: 16px;
+	  left: 16px;
+	  background: none;
+	  border: none;
+	  font-size: 1.8rem;
+	  color: #EEE8AA;
+	  z-index: 1001;   /* sit above sidebar */
+	  cursor: pointer;
+	}
+
+	/* 2) Define a “collapsed” state for the sidebar */
+	#sidebar.collapsed {
+	  transform: translateX(-100%);
+	  transition: transform 0.3s ease;
+	}
+
+	/* 3) And shift the content back when collapsed */
+	#content.collapsed {
+	  margin-left: 20px;  /* or whatever minimal padding you like */
+	  transition: margin-left 0.3s ease;
+	}
+
 
   </style>
   <script>
@@ -268,8 +299,6 @@
 		});
 	  });
 	});
-
-
 	
   </script>
   <!-- Google tag (gtag.js) -->
@@ -286,9 +315,16 @@
 
   <div id="main">
   
+  <!-- Burger Button -->
+  
+  <button id="burger" aria-label="Toggle navigation">
+    <i class="fas fa-times"></i>
+  </button>
+  
   <!-- Sidebar Navigation -->
   <div id="sidebar">
     <div>
+	  <br>
       <h2>Navigation</h2>
       <ul>
         <li><a href="#act1">ACT I</a></li>
@@ -886,6 +922,47 @@
 	</footer>
 
 </body>
+<!-- <script>
+	// Burger Script
+	document.getElementById('burger').addEventListener('click', () => {
+	  const sidebar = document.getElementById('sidebar');
+	  const content = document.getElementById('content');
+
+	  sidebar.classList.toggle('collapsed');
+	  content.classList.toggle('collapsed');
+
+	  // Optionally, toggle the burger icon to an “X”:
+	  const icon = document.querySelector('#burger i');
+	  icon.classList.toggle('fa-bars');
+	  icon.classList.toggle('fa-times');
+	});
+</script> -->
+
+
+<script>
+burger.addEventListener('click', () => {
+  // Toggle the collapsed state on sidebar & content
+  const isCollapsed = sidebar.classList.toggle('collapsed');
+  content.classList.toggle('collapsed');
+
+  // Get the <i> inside the burger button
+  const icon = burger.querySelector('i');
+
+  if (isCollapsed) {
+    // Sidebar just collapsed → show the burger icon
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  } else {
+    // Sidebar just opened → show the cross icon
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+  }
+});
+</script> -->
+
+
+
+
 </html>
 
 
