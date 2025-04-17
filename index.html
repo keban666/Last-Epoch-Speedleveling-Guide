@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Last Epoch Speedleveling Guide</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <style>
+    /* Overall page layout */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #141414;
+      font-family: 'Roboto', sans-serif;
+	  font-size: 1.2rem;
+	  text-shadow: 1px 1px 2px black;
+      color: rgb(180, 158, 121);
+      display: flex;
+    }
+    /* Sidebar styling */
+    #sidebar {
+      width: 220px;
+      background: #1e1e1e;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #sidebar h2 {
+      color: #f39c12;
+      font-size: 24px;
+	  text-shadow: 2px 2px 3px black;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    #sidebar ul li {
+      margin-bottom: 10px;
+    }
+    #sidebar ul li a {
+      color: #EEE8AA;
+      text-decoration: none;
+	  font-size: 24px;
+	  text-shadow: 3px 3px 4px black;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    #sidebar ul li a:hover {
+      color: #f39c12;
+    }
+    /* Clear All button styling in sidebar */
+	#clearBtn {
+	 background-color: #f39c12;
+	 border: none;
+	 color: #141414;
+	 padding: 10px 20px;
+	 margin-top: 20px;
+	 margin-bottom: 40px; /* This adds extra bottom space */
+	 font-size: 20px;
+	 cursor: pointer;
+	 border-radius: 4px;
+	 transition: background-color 0.3s;
+	 width: 100%;
+	}
+
+    #clearBtn:hover {
+      background-color: #e08c0c;
+    }
+    /* Main content styling */
+    #content {
+      margin-left: 260px; /* increased margin-left for better readability */
+      padding: 20px;
+      max-width: 70%;
+    }
+    h1, h2, h3 {
+      color: #f39c12;
+    }
+	h2 {
+	  text-align: center;
+	}
+    .section {
+      margin-bottom: 40px;
+    }
+    .step-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .step-list li {
+      margin-bottom: 8px;
+    }
+    .step-list label {
+      cursor: pointer;
+      transition: color 0.3s, text-decoration 0.3s;
+    }
+    .step-list label:hover {
+      color: #f39c12;
+    }
+    .tips {
+      font-style: italic;
+      margin: 15px 0;
+      color: #a0a0a0;
+    }
+	
+	.location {
+	  color: #C5B358; /* golden color */
+	  font-weight: bold;
+	}
+	
+	.npc {
+	  color: #20B2AA;
+	  font-weight: bold;
+	}
+	
+	.enemy {
+	  color: #D2691E;
+	  font-weight: bold;
+	}
+
+  </style>
+  <script>
+    // Toggle strike-through style on checkbox change, and save its state to localStorage
+    function toggleStrike(checkbox, labelId) {
+      const labelElem = document.getElementById(labelId);
+      if (checkbox.checked) {
+        labelElem.style.textDecoration = 'line-through';
+        labelElem.style.color = '#888';
+      } else {
+        labelElem.style.textDecoration = 'none';
+        labelElem.style.color = 'rgb(180, 158, 121)';
+      }
+      // Save checkbox state using its id as key.
+      localStorage.setItem(checkbox.id, checkbox.checked);
+    }
+
+    // Restore checkbox states from localStorage
+    function restoreCheckboxStates() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(function(checkbox) {
+        const state = localStorage.getItem(checkbox.id);
+        if (state === 'true') {
+          checkbox.checked = true;
+          toggleStrike(checkbox, checkbox.id + '-label');
+        }
+      });
+    }
+
+    // Clear all checkboxes and remove saved states from localStorage
+    function clearAll() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+        toggleStrike(checkbox, checkbox.id + '-label');
+        localStorage.removeItem(checkbox.id);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", restoreCheckboxStates);
+	
+	
+	// Function to check if all checkboxes in the section are checked
+	function checkSectionCompletion(sectionId, nextAnchorId) {
+	  const section = document.getElementById(sectionId);
+	  const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+	  let allChecked = true;
+	  checkboxes.forEach(checkbox => {
+		if (!checkbox.checked) { allChecked = false; }
+	  });
+	  if (allChecked) {
+		// Scroll to the next section smoothly
+		document.getElementById(nextAnchorId).scrollIntoView({ behavior: "smooth" });
+	  }
+	}
+
+	// Event listener to each checkbox in a section.
+
+	
+	
+	document.addEventListener("DOMContentLoaded", function() {
+	  // For act1 -> act2:
+	  const act1Checkboxes = document.querySelectorAll('#act1 input[type="checkbox"]');
+	  act1Checkboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', () => {
+		  checkSectionCompletion('act1', 'act2');
+		});
+	  });
+
+	  // For act2 -> act3:
+	  const act2Checkboxes = document.querySelectorAll('#act2 input[type="checkbox"]');
+	  act2Checkboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', () => {
+		  checkSectionCompletion('act2', 'act3');
+		});
+	  });
+
+	  // For act3 -> act4:
+	  const act3Checkboxes = document.querySelectorAll('#act3 input[type="checkbox"]');
+	  act3Checkboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', () => {
+		  checkSectionCompletion('act3', 'act4');
+		});
+	  });
+
+	  // For act4 -> act5:
+	  const act4Checkboxes = document.querySelectorAll('#act4 input[type="checkbox"]');
+	  act4Checkboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', () => {
+		  checkSectionCompletion('act4', 'act5');
+		});
+	  });
+
+	  // For act5 -> act9:
+	  const act5Checkboxes = document.querySelectorAll('#act5 input[type="checkbox"]');
+	  act5Checkboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', () => {
+		  checkSectionCompletion('act5', 'act9');
+		});
+	  });
+	});
+
+
+	
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments) };
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXX-Y');
+   </script>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <div id="sidebar">
+    <div>
+      <h2>Navigation</h2>
+      <ul>
+        <li><a href="#act1">ACT I</a></li>
+        <li><a href="#act2">ACT II</a></li>
+        <li><a href="#act3">ACT III</a></li>
+		<li><a href="#act4">ACT IV</a></li>
+        <li><a href="#act5">ACT V to Monoliths</a></li>
+		<li><a href="#act9">Temporal  Sanctum and ACT IX</a></li>
+      </ul>
+    </div>
+    <!-- Clear All Button at bottom of sidebar -->
+    <button id="clearBtn" onclick="clearAll()">Clear All</button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content">
+    <h1>Last Epoch Speedleveling Guide</h1>
+    <p>This guide details a highly optimized route to take a fresh character from level 1 all the way to early endgame content (Monoliths) in just over an hour and a half. The method leverages dungeon skip mechanic (the Temporal Sanctum) and efficient side quest routing to pick up passive points and idol slots without fully clearing the campaign.</p>
+	
+	<div class="tips">
+        <strong>Damage Mitigation:</strong> As you progress prioritize Physical Resistance initially. 
+		<br>&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Transition into Void Resistance for Act II and Act III. 
+		<br>&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Switch to Necrotic Resistance around Act IV as you face increased necrotic damage.
+      </div>
+    
+    <!-- ACT I -->
+	
+    <div id="act1" class="section">
+	
+      <h2>ACT I</h2>
+	  
+      <div class="tips">
+        <strong>Tips:</strong> Prioritize movement. Only engage necessary mobs and use downtime to manage inventory.
+      </div>
+	  
+      <h3>Initial Dash Out. Burning Forest</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act1-step1" onclick="toggleStrike(this, 'act1-step1-label')">
+          <label for="act1-step1" id="act1-step1-label">Immediately run to the next zone without fighting early mobs.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act1-step2" onclick="toggleStrike(this, 'act1-step2-label')">
+          <label for="act1-step2" id="act1-step2-label">In the <span class="location">Burning Forest</span>, head east and unlock the <span class="npc">NPC ally</span>. Click top dialog option <span class="tips">(gives AoE & freeze support)</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act1-step3" onclick="toggleStrike(this, 'act1-step3-label')">
+          <label for="act1-step3" id="act1-step3-label">Defeat the first <span class="enemy">Forge Soldier</span> mini boss with your ally’s help and proceed eastwards to <span class="location">Keepers' Camp</span>.</label>
+        </li>
+      </ol>
+
+      <h3>Keepers' Camp to Highlands</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act1-step4" onclick="toggleStrike(this, 'act1-step4-label')">
+          <label for="act1-step4" id="act1-step4-label">Proceed to the <span class="location">Gardens</span>, without NPC interuction. From there to <span class="location">Fortress Walls</span>. Soon after the local boss, speak with <span class="npc">Heoborean Soldier</span> to accept your first side quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act1-step5" onclick="toggleStrike(this, 'act1-step5-label')">
+          <label for="act1-step5" id="act1-step5-label">Run north into the <span class="location">Store Rooms</span>, fight another <span class="enemy">Forge Soldier</span> mini boss, interact with a nearby <span class="npc">Siege Golem</span>, and then turn in the quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act1-step6" onclick="toggleStrike(this, 'act1-step6-label')">
+          <label for="act1-step6" id="act1-step6-label">Follow main quest mark through the<span class="location"> Keepers' Vault</span>. Talk to the <span class="npc">Keeper Balthas</span> to start the event, but <strong>SKIP</strong> helping with it.</label>
+        </li> 
+		<li>
+          <input type="checkbox" id="act1-step7" onclick="toggleStrike(this, 'act1-step7-label')">
+          <label for="act1-step7" id="act1-step7-label">After crossing a bridge at the<span class="location"> Northen Road</span>, interact with a <span class="npc">Keeper Guard</span>. During brief roleplay sequence, take the opportunity to sort your inventory.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act1-step8" onclick="toggleStrike(this, 'act1-step8-label')">
+          <label for="act1-step8" id="act1-step8-label">When prompted, teleport back to the <span class="location">Keepers' Camp</span> and speak with <span class="npc">Keeper Leena</span>.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Highlands & Summit Encounters</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act1-step8" onclick="toggleStrike(this, 'act1-step8-label')">
+          <label for="act1-step8" id="act1-step8-label">From <span class="location">Keepers' Camp</span>, head east to the <span class="location">Highlands</span>. Take out large, rare mobs for rare drops — these early upgrades help your sustain.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act1-step9" onclick="toggleStrike(this, 'act1-step9-label')">
+          <label for="act1-step9" id="act1-step9-label">At the <span class="location">Summit</span>, face the Act I boss. Then speak with the  <span class="npc">Keeper Balthas</span> and return to <span class="location">Keepers' Camp</span> for the next phase. Talk to NPCs.</label>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ACT II -->
+	
+    <div id="act2" class="section">
+	
+      <h2>ACT II</h2>
+	  
+      <div class="tips">
+        <strong>Tips:</strong> Use downtime between fights to upgrade your gear and manage inventory.
+		<br> &emsp; &emsp; Focus on Void Resistance for Act II and Act III.
+      </div>
+	  
+	  <h3>Council Chambers & Last Archive</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act2-step1" onclick="toggleStrike(this, 'act2-step1-label')">
+          <label for="act2-step1" id="act2-step1-label">Run through <span class="location">Crumbling Ruins</span> straight to the next zone. 
+		  <br> &emsp; At <span class="location">Last Refuge Outskirts</span>, skip the first NPC and immediately accept a side quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step2" onclick="toggleStrike(this, 'act2-step2-label')">
+          <label for="act2-step2" id="act2-step2-label">Talk to all three NPCs in the area (southern before northern), then arrive at the <span class="location">Council Chambers</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step3" onclick="toggleStrike(this, 'act2-step3-label')">
+          <label for="act2-step3" id="act2-step3-label">Speak with <span class="npc">Captain Leora</span> and turn in the quest.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act2-step4" onclick="toggleStrike(this, 'act2-step4-label')">
+          <label for="act2-step4" id="act2-step4-label">Also, visit <span class="npc">Elder Gaspar</span> to turn in a quest and grab your idols. Proceed to the left zone.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Archive Library Quest</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act2-step5" onclick="toggleStrike(this, 'act2-step5-label')">
+          <label for="act2-step5" id="act2-step5-label"> In the <span class="location">Last Archive</span>, enter the <span class="location">Erza’s Library</span> for a side quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step6" onclick="toggleStrike(this, 'act2-step6-label')">
+          <label for="act2-step6" id="act2-step6-label">Proceed forward until you find <span class="npc">the Ledger</span>; defeat the monsters guarding it.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step7" onclick="toggleStrike(this, 'act2-step7-label')">
+          <label for="act2-step7" id="act2-step7-label">Take <span class="npc">the Ledger</span> and return to the previous zone. Proceed <span class="location">Pannion's Study</span>, defeat the spawned “students”.
+		  <br> &emsp; Teleport back to the <span class="location">Council Chambers</span>, talk to <span class="npc">Elder Gaspar</span>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act2-step8" onclick="toggleStrike(this, 'act2-step8-label')">
+          <label for="act2-step8" id="act2-step8-label">Turn on the side quest. You must choose between two rewards: 
+		  <br> &emsp; &emsp; <span class="enemy">Avarice Gloves</span> from Elder: Provide elemental resistance and leech (recommended). 
+		  <br> &emsp; &emsp; <span class="enemy">Gambler’s Fallacy</span> from Gambler: Offers a crit bonus if that fits your build better.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Precipice</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act2-step9" onclick="toggleStrike(this, 'act2-step9-label')">
+          <label for="act2-step9" id="act2-step9-label"> Enter the <span class="location">Precipice</span> and follow the main quest marker.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step10" onclick="toggleStrike(this, 'act2-step10-label')">
+          <label for="act2-step10" id="act2-step10-label">Kill the <span class="enemy">Idol of Ruin</span> to spawn a portal on the left that takes you into the subsequent zone.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Ancient Cavern, Armory, and Lower District</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act2-step11" onclick="toggleStrike(this, 'act2-step11-label')">
+          <label for="act2-step11" id="act2-step11-label"> <span class="location">Ancient Cavern</span>: Move left and loop around to locate a <span class="location">Time Rift</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act2-step12" onclick="toggleStrike(this, 'act2-step12-label')">
+          <label for="act2-step12" id="act2-step12-label">Go to the right and enter the <span class="location">Armory</span>’s small arena—clear all mobs and the spawned boss quickly. 
+		  <br> &emsp; Skip stopping at the forge (crafting here is nonessential).</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act2-step13" onclick="toggleStrike(this, 'act2-step13-label')">
+          <label for="act2-step13" id="act2-step13-label"><span class="location">Lower District</span> boss: Defeat the main boss of Act II, then progress to the <span class="location">End of Time</span> via a spawned portal.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Mastery Unlock</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act2-step14" onclick="toggleStrike(this, 'act2-step14-label')">
+          <label for="act2-step14" id="act2-step14-label"> At the <span class="location">End of Time</span>, speak with the NPC to the right, turn in the quest, and climb a ramp to unlock your Mastery. Turn in the quest again.</label>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ACT III -->
+	
+    <div id="act3" class="section">
+	
+      <h2>ACT III</h2>
+	  
+     <!--  <div class="tips">
+        <strong>Tips:</strong> Use the timeline swap mechanic to bypass obstacles and keep your movement skills ready to dodge boss attacks.
+      </div> -->
+	  
+      <h3>Return & Cultist Camp</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act3-step1" onclick="toggleStrike(this, 'act3-step1-label')">
+          <label for="act3-step1" id="act3-step1-label">After unlocking Mastery, head back to <span class="location">Council Chambers</span> to turn in your quest to <span class="npc">Elder Gaspar</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step2" onclick="toggleStrike(this, 'act3-step2-label')">
+          <label for="act3-step2" id="act3-step2-label">Proceed bottom-right to open a door (skip additional NPC dialogues as they’ll appear later). 
+		  <br> &emsp; Enter the <span class="location">Sheltered Wood</span> => <span class="location">Surface</span> => <span class="location">Forsaken Trial</span> => <span class="location">Cultist Camp</span>.</label>
+        </li>
+      </ol>
+
+      <h3>Welryn Docks & Void Centipede</h3>
+	  
+      <ol class="step-list">
+	    <li>
+          <input type="checkbox" id="act3-step3" onclick="toggleStrike(this, 'act3-step3-label')">
+          <label for="act3-step3" id="act3-step3-label">Skip talking any NPCs. Exit <span class="location">Cultist Camp</span> by heading South into the <span class="location">Welryn Docks</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step4" onclick="toggleStrike(this, 'act3-step4-label')">
+          <label for="act3-step4" id="act3-step4-label">Follow the main quest marker in the direction of waypoint, then defeat a <span class="enemy">Void Centipede</span> mini boss — interact with statue for the <span class="npc">Symbol of Hope</span> quest.
+		  <br> &emsp; Teleport back to town.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Ruins of Wellin & Ritual Site</h3>
+	  
+      <ol class="step-list">
+	    <li>
+          <input type="checkbox" id="act3-step5" onclick="toggleStrike(this, 'act3-step5-label')">
+          <label for="act3-step5" id="act3-step5-label"> Top-left exit to the <span class="location">Ruins of Wellin</span>. Skip mobs for the side quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step6" onclick="toggleStrike(this, 'act3-step6-label')">
+          <label for="act3-step6" id="act3-step6-label">At <span class="location">Welryn Undercity</span> - speak to <span class="npc"> the Last Imperial</span> NPC and clear out the three <span class="enemy">Soul Repositories</span> to complete a quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step7" onclick="toggleStrike(this, 'act3-step7-label')">
+          <label for="act3-step7" id="act3-step7-label"><strong>DO NOT</strong> use the path from reward. Teleport back to <span class="location">Cultist Camp</span> for a more convenient path.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act3-step8" onclick="toggleStrike(this, 'act3-step8-label')">
+          <label for="act3-step8" id="act3-step8-label">Once you enter the <span class="location">Ritual Site</span>, shift focus solely to the main quest <span class="tips">(side quests will be revisited later)</span>.
+		  <br> &emsp; Move through <span class="location">Shattered Valley</span> => <span class="location">Courtyard</span> => <span class="location">Teple of Eterra</span> => <span class="location">Lotus Halls</span></label>
+        </li>
+      </ol>
+	  
+	  <h3>Lotus Halls</h3>
+	  
+      <ol class="step-list">
+	    <li>
+          <input type="checkbox" id="act3-step9" onclick="toggleStrike(this, 'act3-step9-label')">
+          <label for="act3-step9" id="act3-step9-label">Once you reach the <span class="location">Lotus Halls</span>, immediately run to the left. You do not need to follow the quest marker—stick close to the left wall.
+		  <br> &emsp; Continue hugging the left side wall until you reach the end where the path curves off to the right</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step10" onclick="toggleStrike(this, 'act3-step10-label')">
+          <label for="act3-step10" id="act3-step10-label">Run into the small room until you locate a statue. Interact with this statue to open up a portal.
+		  <br> &emsp; When the portal spawns, go through it, and pick up the <span class="npc">Shard</span> that appears.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act3-step11" onclick="toggleStrike(this, 'act3-step11-label')">
+          <label for="act3-step11" id="act3-step11-label">Instead of continuing through the newly spawned portal, teleport back to the previous zone <span class="location">Temple of Eterra</span> first, then teleport back into the <span class="location">Lotus Halls</span>.	  
+		  <div class="tips">
+             <strong>Reason:</strong> Exiting and re-entering town forces an interaction with matchmaking servers, which on launch can lead to long load screens. This maneuver helps avoid those delays if playing online.
+          </div> </label>
+        </li>
+		<li>
+          <input type="checkbox" id="act3-step12" onclick="toggleStrike(this, 'act3-step12-label')">
+          <label for="act3-step12" id="act3-step12-label"><strong>Back in the <span class="location">Lotus Halls</span>, you only need one <span class="npc">Shard</span> to activate the bridge.</strong>
+		  <br> &emsp; Run down, activate the bridge, and pass through into the <span class="location">Sanctum</span> area.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act3-step13" onclick="toggleStrike(this, 'act3-step13-label')">
+          <label for="act3-step13" id="act3-step13-label">Once through, follow the right-side wall to progress toward the boss of Act III.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act3-step14" onclick="toggleStrike(this, 'act3-step14-label')">
+          <label for="act3-step14" id="act3-step14-label">After kill - reach the <span class="location">End of Time</span>, run up the ramp, turn in your quest, and then enter the portal that spawns to head into Act IV.</label>
+        </li>
+      </ol>
+	</div>
+	
+	  <!-- ACT IV -->
+	  
+	<div id="act4" class="section">
+	
+	  <h2>ACT IV</h2>
+	
+	  <div class="tips">
+        <strong>Tips:</strong> At this point in the story, Necrotic Resistance becomes increasingly important because you’re nearly done with most of the Void damage you’d normally take. Begin transitioning your gear to favor Necrotic Resistance.
+      </div>
+	  
+	  <h3>Walkthrough via ACT IV</h3>
+	  
+      <ol class="step-list">
+	    <li>
+          <input type="checkbox" id="act4-step1" onclick="toggleStrike(this, 'act4-step1-label')">
+          <label for="act4-step1" id="act4-step1-label">Make your way through <span class="location">Welryn Outskirts</span>. Once you entered <span class="location">Imperial Welryn</span> go to the quest marker and kill mini-boss, interact with <span class="npc">Outcast Prisoner</span> NPC here and continue to the North-Western exit.</label>
+        </li>
+	    <li>
+          <input type="checkbox" id="act4-step2" onclick="toggleStrike(this, 'act4-step2-label')">
+          <label for="act4-step2" id="act4-step2-label">In the <span class="location">Soul Wardens’ Road</span>, complete zombie gate<span class="npc"> event</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act4-step3" onclick="toggleStrike(this, 'act4-step3-label')">
+          <label for="act4-step3" id="act4-step3-label">At the <span class="location">Risen Lake</span> <strong>SKIP</strong> the <span class="location">Time Rift</span> near the waypoint.
+		  <br>  &emsp; Talk to the <span class="npc">Outcast Seer</span>, clear <span class="npc"> event</span>, talk again and head back East towards the Act boss.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act4-step4" onclick="toggleStrike(this, 'act4-step4-label')">
+          <label for="act4-step4" id="act4-step4-label">Reach <span class="location">Dradnought's Deck</span>. Approach <span class="enemy">Admiral Harton</span> (the Act IV boss), defeat him, and then interact with the  <span class="npc">caged NPC</span>. 
+		  <br> &emsp; Jump off the ship’s north side to enter <span class="location">The Shining Cove</span>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act4-step5" onclick="toggleStrike(this, 'act4-step5-label')">
+          <label for="act4-step5" id="act4-step5-label"><span class="location">The Shining Cove</span>: Quickly speak with <span class="npc">Alric</span>, then continue towards the next main quest objective.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act4-step6" onclick="toggleStrike(this, 'act4-step6-label')">
+          <label for="act4-step6" id="act4-step6-label"> In <span class="location">Majasan Desert</span>, on the bridge before transitioning zone, talk to the <span class="npc">Rouj Zabat</span>.
+		  <br> &emsp; Follow through objectives till reach <span class="location">Oracle’s Abode</span>.
+		  <br> &emsp; </label>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ACT V to Monoliths -->
+	
+    <div id="act5" class="section">
+	
+      <h2>ACT V to Monoliths</h2>
+	  
+      <h3>Oracle’s Abode</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act5-step1" onclick="toggleStrike(this, 'act5-step1-label')">
+          <label for="act5-step1" id="act5-step1-label">Once you reach <span class="location">Oracle’s Abode</span>, speak with the <span class="npc">Shrine Maiden</span> to accept a side quest.
+		  <br> &emsp; Continue on to the <span class="npc">Oracle</span> to turn in the quest that will grant extra passive points.</label>
+        </li>
+	   </ol>
+	   
+	   <h3>Completing Skipped Side Objectives</h3>
+	   
+	   <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act5-step2" onclick="toggleStrike(this, 'act5-step2-label')">
+          <label for="act5-step2" id="act5-step2-label">Open your map and travel to the <span class="location">Ruined Era</span>, then head to the <span class="location">Shattered Valley</span> waypoint.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act5-step3" onclick="toggleStrike(this, 'act5-step3-label')">
+          <label for="act5-step3" id="act5-step3-label">Head north to the <span class="location">Abandoned Tunnel</span> and complete the side quest (find and pick up the <span class="npc">tomb</span>). 
+		  <br> &emsp; Teleport back to <span class="location">Shattered Valley</span> after.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act5-step4" onclick="toggleStrike(this, 'act5-step4-label')">
+          <label for="act5-step4" id="act5-step4-label">Run South through a <span class="location">Time Rift</span> into the <span class="location">Ancient Forest</span>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act5-step5" onclick="toggleStrike(this, 'act5-step5-label')">
+          <label for="act5-step5" id="act5-step5-label">Proceed North-East until you reach the quest marker for the <span class="enemy">Primeval Dragon</span> boss and defeat him.</label>
+        </li>        
+      </ol>
+
+      <h3>Turning In Side Quests & Gearing Up</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act5-step6" onclick="toggleStrike(this, 'act5-step6-label')">
+          <label for="act5-step6" id="act5-step6-label">After defeating the <span class="enemy">Primeval Dragon</span>, open your map, go to the <span class="location">Ruined Era</span> and teleport back to the <span class="location">Council Chambers</span>.
+		  <br> &emsp; Turn in both quests (one rewards gold, the other grants idol slots).</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act5-step7" onclick="toggleStrike(this, 'act5-step7-label')">
+          <label for="act5-step7" id="act5-step7-label">Next, go to the <span class="location">Imperial Era</span> and teleport to the <span class="location">Risen Lake</span> waypoint.
+		  <br> &emsp; Head North through another <span class="location">Time Rift</span> and defeat the <span class="enemy">Idol of Ruin</span> for additional rewards.</label>
+        </li>
+      </ol>
+
+      <h3>Final Steps Before the Skip</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act5-step8" onclick="toggleStrike(this, 'act5-step8-label')">
+          <label for="act5-step8" id="act5-step8-label">Teleport back to the <span class="location">Imperial Era</span> near <span class="location">The Shining Cove</span> (close to <span class="location">Maj'Elka</span>).</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act5-step9" onclick="toggleStrike(this, 'act5-step9-label')">
+          <label for="act5-step9" id="act5-step9-label">Enter the <span class="location">Rift</span>. Defeat the <span class="enemy">Ortra'ek the Survivor</span> and pick up the <span class="npc">Sapphire Tablets</span> (located on the table).</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act5-step10" onclick="toggleStrike(this, 'act5-step10-label')">
+          <label for="act5-step10" id="act5-step10-label">Enter the <span class="location">Temporal Sanctum</span> dungeon entrance and unlock its waypoint.
+		  <br> &emsp; Go back to the <span class="location">Imperial Era</span> and then teleport back to <span class="location">Oracle’s Abode</span> to turn in the <span class="npc">Sapphire Tablets</span> quest.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Monoliths</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act5-step11" onclick="toggleStrike(this, 'act5-step11-label')">
+          <label for="act5-step11" id="act5-step11-label">With all pre–skip questing complete (passives, idols, and essential rewards secured), immediately head back to the <span class="location">End of Time</span>.
+		  <br> &emsp; Jump into Monoliths; even at around level 30–31, a well-optimized build can handle early Monolith challenges.
+		  <br> &emsp; <strong>You should now be farming normal Monoliths until you find your <span class="npc">Temporal Sanctum key</span>.</strong></label>
+        </li>
+      </ol>
+    </div>
+
+	<!-- Temporal  Sanctum and ACT IX -->
+	
+    <div id="act9" class="section">
+	
+      <h2>Temporal  Sanctum and ACT IX</h2>
+	  
+      <h3>The Temporal Sanctum Dungeon</h3>
+	  
+	  <div class="tips">
+		  <strong>Preparation:</strong> Aim to be in the mid-60s or higher.
+	  </div>
+		
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act9-step1" onclick="toggleStrike(this, 'act9-step1-label')">
+          <label for="act9-step1" id="act9-step1-label">Once you’ve acquired a <span class="npc">Temporal Sanctum key</span> from your Monolith runs, right‑click it.
+		  <br> &emsp; This instantly opens the corresponding map spot and transports you to the <span class="location">Temporal Sanctum's</span> entrance in the <span class="location">Ruined Era</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step2" onclick="toggleStrike(this, 'act9-step2-label')">
+          <label for="act9-step2" id="act9-step2-label">Open your map and travel to the <span class="location">Ruined Era</span>, then head to the <span class="location">Shattered Valley</span> Waypoint.
+		  <br> &emsp; At the entrance, walk up to the door and insert your key. Click <span class="npc">“Enter Sanctum”</span> and select <span class="npc">Tier 1</span> to begin the dungeon run.</label>
+        </li>
+		<div class="tips">
+		  <strong>Tips:</strong> Make sure your movement and escape skills are ready.
+		</div>
+        <li>
+          <input type="checkbox" id="act9-step3" onclick="toggleStrike(this, 'act9-step3-label')">
+          <label for="act9-step3" id="act9-step3-label">Complete Dungeon. After defeating <span class="enemy">Chronomancer Julra</span> head to the back entrance where you will find an <span class="npc">Eternity Cache</span>.		  
+		  <br> &emsp; <strong>Even if you do not craft a legendary, you must interact with the cache in the <span class="location">Divine Era</span>; doing so opens a gate that leads directly into Act IX.</strong></label>
+        </li>
+	   </ol>
+	   
+	   <h3>Transitioning into ACT IX</h3>
+	   
+       <ol class="step-list">
+		<li>
+          <input type="checkbox" id="act9-step4" onclick="toggleStrike(this, 'act9-step4-label')">
+          <label for="act9-step4" id="act9-step4-label">At the new waypoint, run East until you hit a blocked wall. Then, veer South and prepare to engage the next mini boss <span class="enemy">Scalebane Swarmkeeper</span>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step5" onclick="toggleStrike(this, 'act9-step5-label')">
+          <label for="act9-step5" id="act9-step5-label">Kill the mini boss. Directly beneath its spawn, you’ll find an NPC locked in a cage.
+		  <br> &emsp; Break the cage to free the NPC, then run back north toward the original barricade — which should now be open.</label>
+        </li>        
+      
+
+      <h3>Desert Treasure and Maj'Elka Transition</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act9-step6" onclick="toggleStrike(this, 'act9-step6-label')">
+          <label for="act9-step6" id="act9-step6-label">As you proceed East from the open barricade, look for a side area (a small vault not marked on your map) related to a <span class="npc">Desert Treasure</span> side quest.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step7" onclick="toggleStrike(this, 'act9-step7-label')">
+          <label for="act9-step7" id="act9-step7-label">Enter the vault and kill the large rare mob inside.
+		  <br> &emsp; This enemy will drop the <span class="npc">Desert Treasure</span> item on the ground. Pick it up, then exit the vault via the same route.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step8" onclick="toggleStrike(this, 'act9-step8-label')">
+          <label for="act9-step8" id="act9-step8-label">Upon arriving at <span class="location">Maj'Elka</span>, you will encounter a long  bridge. To save time:
+		  <br> &emsp; Instead of crossing it, run back to the <span class="location">Radiant Dunes</span>.
+		  <br> &emsp; Open your map and teleport to the <span class="location">Maj'Elka</span> waypoint (it is unlocked now).
+		  </label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step9" onclick="toggleStrike(this, 'act9-step9-label')">
+          <label for="act9-step9" id="act9-step9-label">Once in <span class="location">Maj'Elka Upper District</span>, run straight to the <span class="location">Lower District</span>. <strong>No NPC interactions are required here</strong>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step10" onclick="toggleStrike(this, 'act9-step10-label')">
+          <label for="act9-step10" id="act9-step10-label">In the <span class="location">Lower District</span>, look for the icon marking <span class="enemy">Ruby Commander</span>.
+		  <br> &emsp; Approach and kill him, then return the way you came to a fork in the path. Follow it down to the next area.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step11" onclick="toggleStrike(this, 'act9-step11-label')">
+          <label for="act9-step11" id="act9-step11-label">At the end you will face a <span class="enemy">Scalebane Bodyguard</span>.
+           <strong>Dialogue Tip: Spam‑click the top dialogue option</strong>.
+		   <br> &emsp; If you bribe him, you risk losing significant amount of gold (100,000). Stick to the top dialogue option and choose to fight instead.</label>
+        </li>
+      </ol>
+
+      <h3>Maj'Elka Slums, Quest Turn‑Ins, and Faction Unlock</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act9-step12" onclick="toggleStrike(this, 'act9-step12-label')">
+          <label for="act9-step12" id="act9-step12-label">Once you enter the <span class="location">Maj'Elka Slums</span>, skip the first quest marker on the left and instead go to the next marker on the right.
+		  <br> &emsp; Hand over the desert treasure at the designated NPC. This turn‑in nets you 5,000 gold.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step13" onclick="toggleStrike(this, 'act9-step13-label')">
+          <label for="act9-step13" id="act9-step13-label">Proceed to the last quest location in the <span class="location">Slums</span>. Find and kill the mini boss — the <span class="enemy">Scalebane Guild Leader</span>.
+		  <br> &emsp; After defeating this enemy, teleport back to <span class="location">Maj'Elka Upper District</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step14" onclick="toggleStrike(this, 'act9-step14-label')">
+          <label for="act9-step14" id="act9-step14-label">Once back in the <span class="location">Upper District</span>, speak with <span class="npc">Zerrick</span>. Turn in any pending quests here. From <span class="npc">Zerrick</span>, proceed to the <span class="location">Oasis</span> at the North-Western exit.
+		  <br> &emsp; <strong>Here, <span class="npc">Zerrick</span> will be waiting. Choose whether to visit the Bazaar or the Observatory; this decision unlocks your chosen faction.</strong></label>
+        </li>
+      </ol>
+	  
+	  <h3>The Mines, Temple, and Final Boss Fight</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act9-step15" onclick="toggleStrike(this, 'act9-step15-label')">
+          <label for="act9-step15" id="act9-step15-label">Once you get to the <span class="location">Oasis</span>, run South-West towards textured square wich will start a side quest.
+		  <br> &emsp; Keep running to the left and follow new questmarker. Kill the <span class="enemy">Spine Hunter Alpha</span> at Spinehunter Den. Move East then.</label>
+		</li>  
+		<li>
+          <input type="checkbox" id="act9-step16" onclick="toggleStrike(this, 'act9-step16-label')">
+          <label for="act9-step16" id="act9-step16-label"> Accept a side quest from <span class="npc">Maharaan Zabat</span> NPC located outside the Mine.
+		  <br> &emsp; Work through the <span class="location">Crystal Mines</span> by heading North-West until you reach the side quest marker.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step17" onclick="toggleStrike(this, 'act9-step17-label')">
+          <label for="act9-step17" id="act9-step17-label"> Defeat the <span class="enemy">Crystal Lotus</span> mini boss. Continue East toward the main quest.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step18" onclick="toggleStrike(this, 'act9-step18-label')">
+          <label for="act9-step18" id="act9-step18-label">In the <span class="location">Aerie</span>, head upward to speak with <span class="npc">Zerrick</span> again and then proceed West toward a <span class="npc">Large Avian</span> main quest marker.
+		  <br> &emsp; Kill the <span class="enemy">Siege Golem</span> at this marker.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step19" onclick="toggleStrike(this, 'act9-step19-label')">
+          <label for="act9-step19" id="act9-step19-label">		  
+		  Talk to <span class="npc">Zerrick</span> to board the bird, which transports you to the <span class="location">Majasan Heights</span>.
+		  <br> &emsp; Clear any mobs that spawn; the bird will eventually landing on <span class="location">Temple Rooftops</span>.</label>
+        </li>
+        <li>
+          <input type="checkbox" id="act9-step20" onclick="toggleStrike(this, 'act9-step20-label')">
+          <label for="act9-step20" id="act9-step20-label">Run South-East toward the waypoint, then curve North-East through looping paths until you find the entrance to the <span class="location">Upper Temple</span>.</label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step21" onclick="toggleStrike(this, 'act9-step21-label')">
+          <label for="act9-step21" id="act9-step21-label"> At the <span class="location">Upper Temple</span> run in North-East direction. Once inside <span class="location">Lower Temple</span>, you will encounter <span class="enemy">Apophis</span>. <br> &emsp; After encounter, continue to North-East part of the room towards last boss area.</label> 
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step22" onclick="toggleStrike(this, 'act9-step22-label')">
+          <label for="act9-step22" id="act9-step22-label">In the <span class="location">Chamber of Vessels</span>, battle <span class="enemy">Majasa</span> — the final boss of ActT IX:
+		  <br><strong> &emsp; Avoid standing directly in front of her stone beam to prevent being stunned. Kill spawned crystals (will make it twice).
+		  <br> &emsp; During her second phase, she stops summoning crystals and attacks more frequently. Focus on mobility and dodge her attacks.</strong></label>
+        </li>
+		<li>
+          <input type="checkbox" id="act9-step23" onclick="toggleStrike(this, 'act9-step23-label')">
+          <label for="act9-step23" id="act9-step23-label">Once <span class="enemy">Majasa</span> is defeated, approach <span class="npc">Apophis</span> for one final conversation that ultimately teleports you to the <span class="location">End of Time</span> — securing your +1 to All Attributes bonus.</label>
+        </li>
+      </ol>
+	  
+	  <h3>Post-Campaign Completion</h3>
+	  
+      <ol class="step-list">
+        <li>
+          <input type="checkbox" id="act9-step24" onclick="toggleStrike(this, 'act9-step24-label')">
+          <label for="act9-step24" id="act9-step24-label">After finishing Act IX and earning your bonus, use the <span class="location">End of Time</span> to teleport back to the <span class="location">Divine Era</span>.
+		  <br> &emsp; Head to the <span class="location">Oasis</span> (located just outside the <span class="location">Mines</span>) and turn in the quest related to the <span class="enemy">Crystal Lotus</span>.
+		  <br> &emsp; After that teleport back to the <span class="location">Mak'Elka Upper District</span>. Turn in the last quest to <span class="npc">Ritolo the Trader</span> <span class="tips">(this will help you get passive rewards in case you missed some step earlier)</span>.
+        </li>
+      </ol>
+	  
+	  <h2>Campaign Finished.</h2>
+		<p> At this point, all campaign quests and side objectives have been completed. You will have:
+		  <br> &emsp; - All Idol Slots unlocked.
+		  <br> &emsp; - Every Passive reward secured.
+		  <br> &emsp; - A fully credited +1 to All Attributes.
+		  <br><br>Now, you can freely continue your Monolith progression and focus on gearing up for endgame challenges.</p>	  
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+<!-- <span class="npc">\1</span>
+<span class="npc">$0</span>
+
+(?i)\b(?:Burning Forest|Keepers'? Camp|Gardens|Store Rooms|Northen Road|Highlands|Summit|Council Chambers|Last Refuge Outskirts|Last Archive|Erza['’]s Library|Pannion['’]?s Study|Sheltered Wood|Surface|Forsaken Trial|Cultist Camp|Welryn Docks|Ruins of Wellin|Welryn Undercity|Lotus Halls|Temple of Eterra|Imperial Welryn|The Shining Cove|Oracle['’]s Abode|Shattered Valley Waypoint|Ancient Cavern|Armory|Lower District|End of Time|Imperial Era|Risen Lake Waypoint|Maj['’]?Elka|Radiant Dunes|Crystal Mines|Aerie|Temple Rooftops|Upper Temple|Lower Temple|Chamber of Vessels|Oasis|Divine Era|Majasan Heights)\b
+
+
+(?i)\b(?:NPC Ally|Keeper Leena|Keeper Balthas|Captain Leora|Elder Gaspar|Outcast Seer|Last Imperial NPC|Zerrick|Chronomancer Joro|Maharaan Zabat|Admiral Harton|Ruby Commander|Shrine Maiden|Oracle\b|Apophis|Majasa|Ritolo the Trader)\b 
+
+(?i)\b(?:Forge Soldier|Idol of Ruin|Void Centipede|Chronomancer (?:Joro|Julra)|Scalebane Swarmkeeper|Ruby Commander|Scalebane Bodyguard|Crystal Lotus|Siege Golem|Ortra['’]ek the Survivor|Admiral Harton|Scalebane Guild Leader|Majasa)\b
+
+
+-->
