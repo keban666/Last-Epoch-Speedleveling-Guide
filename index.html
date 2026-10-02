@@ -252,6 +252,76 @@
 	  background: #e08c0c;
 	}
 
+	.tip-box {
+     margin-top: 14px;
+ 	 padding: 12px 14px;
+	 border-left: 4px solid #b3262e;
+ 	 background: rgba(255, 255, 255, 0.04);
+ 	 border-radius: 6px;
+	}
+
+.image-note {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.zoom-thumb {
+  max-width: 100%;
+  width: 500px;
+  border-radius: 8px;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.zoom-thumb:hover {
+  transform: scale(1.02);
+}
+
+.image-caption {
+  margin-top: 6px;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 40px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.image-modal-content {
+  display: block;
+  margin: auto;
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 8px;
+}
+
+.image-modal-caption {
+  margin: 12px auto 0;
+  text-align: center;
+  color: #ccc;
+  max-width: 90%;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  color: #fff;
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+}
+	  
+	  
   </style>
   <script>
     // Toggle strike-through style on checkbox change, and save its state to localStorage
@@ -362,7 +432,20 @@
 		document.getElementById('act1').scrollIntoView({ behavior: 'smooth' });
 	  });
 	});
-	
+
+  function openImageModal(src, alt) {
+    document.getElementById("imageModal").style.display = "block";
+    document.getElementById("imageModalImg").src = src;
+    document.getElementById("imageModalImg").alt = alt;
+    document.getElementById("imageModalCaption").textContent = alt;
+  }
+
+  function closeImageModal() {
+    document.getElementById("imageModal").style.display = "none";
+  }
+
+
+	  
   </script>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N904BCZT2V"></script>
@@ -809,6 +892,29 @@
 		  <br> &emsp; <strong>You should now be farming normal Monoliths until you find your <span class="npc">Temporal Sanctum key</span>.</strong></label>
         </li>
       </ol>
+
+
+		<div class="tip-box">
+  		 <p>
+	    	If you're unlucky like me and the key doesn't drop, don't overlevel yourself in Monoliths.
+    		Starting with <span style="color: #b3262e; font-weight: bold;">Season 5</span>, you can just go to the
+    		<span class="location">Maj'Elkan Catacombs</span> and grab a guaranteed
+    		<span class="npc">Temporal Sanctum key</span> from the
+    		<span class="tips">One-Shot Cache</span>.
+ 		 </p>
+
+  		 <div class="image-note">
+    		<img
+    		  src="images/maj-elkan-cache.jpg"
+    		  alt="Maj'Elkan Catacombs One-Shot Cache location"
+   			  class="zoom-thumb"
+   		  	  onclick="openImageModal(this.src, this.alt)"
+    		>
+    		<p class="image-caption">Click the image to zoom in.</p>
+  		 </div>
+		</div>
+		
+		
     </div>
 
 	<!-- Temporal  Sanctum and ACT IX -->
@@ -826,7 +932,7 @@
       <ol class="step-list">
         <li>
           <input type="checkbox" id="act9-step1" onclick="toggleStrike(this, 'act9-step1-label')">
-          <label for="act9-step1" id="act9-step1-label">Once you’ve acquired a <span class="npc">Temporal Sanctum key</span> from your Monolith runs, right‑click it.
+          <label for="act9-step1" id="act9-step1-label">Once you’ve acquired a <span class="npc">Temporal Sanctum key</span>, right‑click it.
 		  <br> &emsp; This instantly opens the corresponding map spot and transports you to the <span class="location">Temporal Sanctum's</span> entrance in the <span class="location">Ruined Era</span>.</label>
         </li>
         <li>
@@ -998,6 +1104,12 @@
 		<i class="fab fa-discord"></i>
 	  </a>
 	</footer>
+
+	<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+	  <span class="image-modal-close">&times;</span>
+	  <img id="imageModalImg" class="image-modal-content" alt="">
+	  <div id="imageModalCaption" class="image-modal-caption"></div>
+	</div>
 
 </body>
 <!-- <script>
